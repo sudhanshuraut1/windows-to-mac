@@ -1,0 +1,37 @@
+<html>
+    <script>
+
+       let timeout;                       ////debouncing here
+       function debouncePopulateDiv(){
+        //how to cancel a clock? use clearTimeout
+        clearTimeout(timeout);
+        timeout = setTimeout(function(){populateDiv()},2000);
+       }
+
+       function populateDiv(){
+            const a = document.getElementById("firstNumber").value
+            const b = document.getElementById("secondNumber").value
+            const element = document.getElementById("finalSum")
+            console.log(element)
+
+            fetch("https://sum-server.100xdevs.com/sum?a="+ a + "&b="+ b).then(function(response){ //link is for a server deployed somewere that gives sum
+                      console.log(response);
+                      response.text().then(function(ans){
+                        console.log(ans);
+                        document.getElementById("finalSum").innerHTML = ans;
+                      })
+            });
+
+            //write a cleaner async await populateDiv function yourself
+
+            
+       }
+    </script>
+
+     <body>
+         <input oninput="debouncePopulateDiv()" id = "firstNumber" type ="text" placeholder="First number"></input> <br></br>
+         <input oninput="debouncePopulateDiv()" id = "secondNumber" type ="text" placeholder="second number"></input> <br></br>
+         <button onclick="populateDiv()">Calculate sum</button><br></br>
+         <div id = "finalSum"></div>
+     </body> 
+</html>      
